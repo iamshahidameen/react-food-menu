@@ -3,14 +3,16 @@ import Categories from './Categories';
 import items from './data';
 
 const Menu = () => {
-  const [list, setList] = useState('breakfast');
-  const filteredItems = items.filter((newList) => newList.category === list);
-  console.log(filteredItems);
+  const [list, setList] = useState(items);
+
+  //let filteredItems = items.filter((newList) => newList.category === list);
+  //console.log(filteredItems);
 
   function filterMenus(clickedMenu) {
     if (clickedMenu === 'all') {
+      setList(items);
     } else {
-      setList(clickedMenu);
+      setList(items.filter((newList) => newList.category === clickedMenu));
     }
   }
 
@@ -42,7 +44,11 @@ const Menu = () => {
             <div className="underline"></div>
           </div>
           <div className="btn-container">
-            <button type="button" className="filter-btn">
+            <button
+              type="button"
+              className="filter-btn"
+              onClick={() => filterMenus('all')}
+            >
               all
             </button>
             {categoryMenus.map((menu) => {
@@ -58,7 +64,7 @@ const Menu = () => {
             })}
           </div>
           <div className="section-center">
-            {filteredItems.map((item) => {
+            {list.map((item) => {
               return <Categories key={`id-${item.id}`} {...item} />;
             })}
           </div>
