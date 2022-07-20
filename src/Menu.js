@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Categories from './Categories';
 import items from './data';
 
 const Menu = () => {
+  const [list, setList] = useState('breakfast');
+  const filteredItems = items.filter((newList) => newList.category === list);
+  console.log(filteredItems);
+
+  function filterMenus(clickedMenu) {
+    if (clickedMenu === 'all') {
+    } else {
+      setList(clickedMenu);
+    }
+  }
+
   let categoryMenuArr = [];
+
   items.map((catItem) => {
     categoryMenuArr.push(catItem.category);
   });
@@ -15,7 +27,7 @@ const Menu = () => {
   let categoryMenus = categoryMenuArr.filter(
     (singleValue, arrayIndex, arrayItself) => {
       //console.log(arrayItself);
-      console.log(arrayItself.indexOf(singleValue), singleValue);
+      //console.log(arrayItself.indexOf(singleValue), singleValue);
 
       return arrayItself.indexOf(singleValue) === arrayIndex;
     }
@@ -35,14 +47,20 @@ const Menu = () => {
             </button>
             {categoryMenus.map((menu) => {
               return (
-                <button type="button" className="filter-btn">
+                <button
+                  type="button"
+                  className="filter-btn"
+                  onClick={() => filterMenus(menu)}
+                >
                   {menu}
                 </button>
               );
             })}
           </div>
           <div className="section-center">
-            <Categories />
+            {filteredItems.map((item) => {
+              return <Categories key={`id-${item.id}`} {...item} />;
+            })}
           </div>
         </section>
       </main>
